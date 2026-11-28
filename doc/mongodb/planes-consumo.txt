@@ -1,0 +1,2209 @@
+{
+  totalSessions: 50002,
+  matchedSessions: 959
+}
+{
+  repetition: 1,
+  hint: {
+    '$natural': 1
+  },
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 961,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'COLLSCAN',
+                planNodeId: 1,
+                filter: {
+                  '$and': [
+                    {
+                      started_at: {
+                        '$lt': ISODate('2026-06-08T00:00:00.000Z')
+                      }
+                    },
+                    {
+                      started_at: {
+                        '$gte': ISODate('2026-06-01T00:00:00.000Z')
+                      }
+                    }
+                  ]
+                },
+                nss: 'cineconecta_benchmark.playback_sessions',
+                direction: 'forward'
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s22 env: { s20 = {} (emptyObj) }',
+          stages: '[5] project [s22 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21)] \n' +
+            '[5] project [s21 = \n' +
+            '    if isNullish(s19) \n' +
+            '    then null \n' +
+            '    elif isNumber(s19) \n' +
+            '    then (s19 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s18 = newObj("plan_id", s13, "content_type", s12), s19 = doubleDoubleSumFinalize(s15)] \n' +
+            '[4] group [s13, s12] [s15 = aggDoubleDoubleSum(s11), s16 = _internalCount::accumulate(s16, 1)] spillSlots[s14, s17] mergingExprs[aggMergeDoubleDoubleSums(s14), _internalCount::merge(s17)] \n' +
+            '[4] extract_field_paths inputs[s10 = Get(_id)/Id, s11 = Get(seconds)/Id] outputs[s12 = Get(_id)/Traverse/Get(content_type)/Id, s13 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s10 = newObj("plan_id", s4, "content_type", s3, "profile_id", s5), s11 = doubleDoubleSumFinalize(s9)] \n' +
+            '[3] group [s4, s3, s5] [s9 = aggDoubleDoubleSum(s6)] spillSlots[s8] mergingExprs[aggMergeDoubleDoubleSums(s8)] \n' +
+            '[1] filter {(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false))} \n' +
+            '[1] scan generic [s1 = record, s2 = recordId] [s3 = content_type, s4 = plan_id, s5 = profile_id, s6 = watched_sec, s7 = started_at] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 25,
+      executionTimeMicros: 25151,
+      totalKeysExamined: 0,
+      totalDocsExamined: 50002,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 17,
+        opens: 1,
+        closes: 1,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        projections: {
+          '22': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 17,
+          opens: 1,
+          closes: 1,
+          saveState: 1,
+          restoreState: 1,
+          isEOF: 1,
+          projections: {
+            '21': '\n' +
+              '    if isNullish(s19) \n' +
+              '    then null \n' +
+              '    elif isNumber(s19) \n' +
+              '    then (s19 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 17,
+            opens: 1,
+            closes: 1,
+            saveState: 1,
+            restoreState: 1,
+            isEOF: 1,
+            projections: {
+              '18': 'newObj("plan_id", s13, "content_type", s12) ',
+              '19': 'doubleDoubleSumFinalize(s15) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 17,
+              opens: 1,
+              closes: 1,
+              saveState: 1,
+              restoreState: 1,
+              isEOF: 1,
+              groupBySlots: [
+                Long('13'),
+                Long('12')
+              ],
+              expressions: {
+                '15': 'aggDoubleDoubleSum(s11) ',
+                '16': '_internalCount::accumulate(s16, 1) ',
+                initExprs: {
+                  '15': null,
+                  '16': null,
+                  mergingExprs: {
+                    '14': 'aggMergeDoubleDoubleSums(s14) ',
+                    '17': '_internalCount::merge(s17) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 17,
+                opens: 1,
+                closes: 2,
+                saveState: 1,
+                restoreState: 1,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 17,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 1,
+                  restoreState: 1,
+                  isEOF: 1,
+                  projections: {
+                    '10': 'newObj("plan_id", s4, "content_type", s3, "profile_id", s5) ',
+                    '11': 'doubleDoubleSumFinalize(s9) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 17,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 1,
+                    restoreState: 1,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('4'),
+                      Long('3'),
+                      Long('5')
+                    ],
+                    expressions: {
+                      '9': 'aggDoubleDoubleSum(s6) ',
+                      initExprs: {
+                        '9': null,
+                        mergingExprs: {
+                          '8': 'aggMergeDoubleDoubleSums(s8) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'filter',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 17,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 1,
+                      restoreState: 1,
+                      isEOF: 1,
+                      numTested: 50002,
+                      filter: '(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false)) ',
+                      inputStage: {
+                        stage: 'scan',
+                        planNodeId: 1,
+                        nReturned: 50002,
+                        executionTimeMillisEstimate: 17,
+                        opens: 1,
+                        closes: 1,
+                        saveState: 1,
+                        restoreState: 1,
+                        isEOF: 1,
+                        numReads: 50002,
+                        recordSlot: 1,
+                        recordIdSlot: 2,
+                        scanFieldNames: [
+                          'content_type',
+                          'plan_id',
+                          'profile_id',
+                          'watched_sec',
+                          'started_at'
+                        ],
+                        scanFieldSlots: [
+                          Long('3'),
+                          Long('4'),
+                          Long('5'),
+                          Long('6'),
+                          Long('7')
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: {
+        '$natural': 1
+      },
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
+{
+  repetition: 1,
+  hint: 'sessions_consumption',
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 879,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'PROJECTION_COVERED',
+                planNodeId: 2,
+                transformBy: {
+                  content_type: true,
+                  plan_id: true,
+                  profile_id: true,
+                  watched_sec: true,
+                  _id: false
+                },
+                inputStage: {
+                  stage: 'IXSCAN',
+                  planNodeId: 1,
+                  nss: 'cineconecta_benchmark.playback_sessions',
+                  keyPattern: {
+                    started_at: 1,
+                    plan_id: 1,
+                    content_type: 1,
+                    profile_id: 1,
+                    watched_sec: 1
+                  },
+                  indexName: 'sessions_consumption',
+                  isMultiKey: false,
+                  multiKeyPaths: {
+                    started_at: [],
+                    plan_id: [],
+                    content_type: [],
+                    profile_id: [],
+                    watched_sec: []
+                  },
+                  isUnique: false,
+                  isSparse: false,
+                  isPartial: false,
+                  indexVersion: 2,
+                  direction: 'forward',
+                  indexBounds: {
+                    started_at: [
+                      '[new Date(1780272000000), new Date(1780876800000))'
+                    ],
+                    plan_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    content_type: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    profile_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    watched_sec: [
+                      '[MinKey, MaxKey]'
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s20 env: { s18 = {} (emptyObj) }',
+          stages: '[5] project [s20 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19)] \n' +
+            '[5] project [s19 = \n' +
+            '    if isNullish(s17) \n' +
+            '    then null \n' +
+            '    elif isNumber(s17) \n' +
+            '    then (s17 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s16 = newObj("plan_id", s11, "content_type", s10), s17 = doubleDoubleSumFinalize(s13)] \n' +
+            '[4] group [s11, s10] [s13 = aggDoubleDoubleSum(s9), s14 = _internalCount::accumulate(s14, 1)] spillSlots[s12, s15] mergingExprs[aggMergeDoubleDoubleSums(s12), _internalCount::merge(s15)] \n' +
+            '[4] extract_field_paths inputs[s8 = Get(_id)/Id, s9 = Get(seconds)/Id] outputs[s10 = Get(_id)/Traverse/Get(content_type)/Id, s11 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s8 = newObj("plan_id", s2, "content_type", s3, "profile_id", s4), s9 = doubleDoubleSumFinalize(s7)] \n' +
+            '[3] group [s2, s3, s4] [s7 = aggDoubleDoubleSum(s5)] spillSlots[s6] mergingExprs[aggMergeDoubleDoubleSums(s6)] \n' +
+            '[1] ixseek seekKeyLow = KS(788000019E807AEC000A0A0A0A01) seekKeyHigh = KS(788000019EA48770000A0A0A0A01) [s1 = recordId] [s2 = 1, s3 = 2, s4 = 3, s5 = 4] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" @"sessions_consumption" forward '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 1,
+      executionTimeMicros: 1940,
+      totalKeysExamined: 959,
+      totalDocsExamined: 0,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        opens: 1,
+        closes: 1,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        projections: {
+          '20': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          opens: 1,
+          closes: 1,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          projections: {
+            '19': '\n' +
+              '    if isNullish(s17) \n' +
+              '    then null \n' +
+              '    elif isNumber(s17) \n' +
+              '    then (s17 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 0,
+            opens: 1,
+            closes: 1,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 1,
+            projections: {
+              '16': 'newObj("plan_id", s11, "content_type", s10) ',
+              '17': 'doubleDoubleSumFinalize(s13) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 0,
+              opens: 1,
+              closes: 1,
+              saveState: 0,
+              restoreState: 0,
+              isEOF: 1,
+              groupBySlots: [
+                Long('11'),
+                Long('10')
+              ],
+              expressions: {
+                '13': 'aggDoubleDoubleSum(s9) ',
+                '14': '_internalCount::accumulate(s14, 1) ',
+                initExprs: {
+                  '13': null,
+                  '14': null,
+                  mergingExprs: {
+                    '12': 'aggMergeDoubleDoubleSums(s12) ',
+                    '15': '_internalCount::merge(s15) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 0,
+                opens: 1,
+                closes: 2,
+                saveState: 0,
+                restoreState: 0,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 0,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 0,
+                  restoreState: 0,
+                  isEOF: 1,
+                  projections: {
+                    '8': 'newObj("plan_id", s2, "content_type", s3, "profile_id", s4) ',
+                    '9': 'doubleDoubleSumFinalize(s7) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 0,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 0,
+                    restoreState: 0,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('2'),
+                      Long('3'),
+                      Long('4')
+                    ],
+                    expressions: {
+                      '7': 'aggDoubleDoubleSum(s5) ',
+                      initExprs: {
+                        '7': null,
+                        mergingExprs: {
+                          '6': 'aggMergeDoubleDoubleSums(s6) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'ixseek',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 0,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 0,
+                      restoreState: 0,
+                      isEOF: 1,
+                      indexName: 'sessions_consumption',
+                      keysExamined: 959,
+                      seeks: 1,
+                      numReads: 960,
+                      recordIdSlot: 1,
+                      outputSlots: [
+                        Long('2'),
+                        Long('3'),
+                        Long('4'),
+                        Long('5')
+                      ],
+                      indexKeysToInclude: '00000000000000000000000000011110',
+                      seekKeyLow: 'KS(788000019E807AEC000A0A0A0A01) ',
+                      seekKeyHigh: 'KS(788000019EA48770000A0A0A0A01) '
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: 'sessions_consumption',
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
+{
+  repetition: 2,
+  hint: {
+    '$natural': 1
+  },
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 929,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'COLLSCAN',
+                planNodeId: 1,
+                filter: {
+                  '$and': [
+                    {
+                      started_at: {
+                        '$lt': ISODate('2026-06-08T00:00:00.000Z')
+                      }
+                    },
+                    {
+                      started_at: {
+                        '$gte': ISODate('2026-06-01T00:00:00.000Z')
+                      }
+                    }
+                  ]
+                },
+                nss: 'cineconecta_benchmark.playback_sessions',
+                direction: 'forward'
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s22 env: { s20 = {} (emptyObj) }',
+          stages: '[5] project [s22 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21)] \n' +
+            '[5] project [s21 = \n' +
+            '    if isNullish(s19) \n' +
+            '    then null \n' +
+            '    elif isNumber(s19) \n' +
+            '    then (s19 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s18 = newObj("plan_id", s13, "content_type", s12), s19 = doubleDoubleSumFinalize(s15)] \n' +
+            '[4] group [s13, s12] [s15 = aggDoubleDoubleSum(s11), s16 = _internalCount::accumulate(s16, 1)] spillSlots[s14, s17] mergingExprs[aggMergeDoubleDoubleSums(s14), _internalCount::merge(s17)] \n' +
+            '[4] extract_field_paths inputs[s10 = Get(_id)/Id, s11 = Get(seconds)/Id] outputs[s12 = Get(_id)/Traverse/Get(content_type)/Id, s13 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s10 = newObj("plan_id", s4, "content_type", s3, "profile_id", s5), s11 = doubleDoubleSumFinalize(s9)] \n' +
+            '[3] group [s4, s3, s5] [s9 = aggDoubleDoubleSum(s6)] spillSlots[s8] mergingExprs[aggMergeDoubleDoubleSums(s8)] \n' +
+            '[1] filter {(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false))} \n' +
+            '[1] scan generic [s1 = record, s2 = recordId] [s3 = content_type, s4 = plan_id, s5 = profile_id, s6 = watched_sec, s7 = started_at] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 24,
+      executionTimeMicros: 24669,
+      totalKeysExamined: 0,
+      totalDocsExamined: 50002,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 22,
+        opens: 1,
+        closes: 1,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        projections: {
+          '22': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 22,
+          opens: 1,
+          closes: 1,
+          saveState: 1,
+          restoreState: 1,
+          isEOF: 1,
+          projections: {
+            '21': '\n' +
+              '    if isNullish(s19) \n' +
+              '    then null \n' +
+              '    elif isNumber(s19) \n' +
+              '    then (s19 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 22,
+            opens: 1,
+            closes: 1,
+            saveState: 1,
+            restoreState: 1,
+            isEOF: 1,
+            projections: {
+              '18': 'newObj("plan_id", s13, "content_type", s12) ',
+              '19': 'doubleDoubleSumFinalize(s15) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 22,
+              opens: 1,
+              closes: 1,
+              saveState: 1,
+              restoreState: 1,
+              isEOF: 1,
+              groupBySlots: [
+                Long('13'),
+                Long('12')
+              ],
+              expressions: {
+                '15': 'aggDoubleDoubleSum(s11) ',
+                '16': '_internalCount::accumulate(s16, 1) ',
+                initExprs: {
+                  '15': null,
+                  '16': null,
+                  mergingExprs: {
+                    '14': 'aggMergeDoubleDoubleSums(s14) ',
+                    '17': '_internalCount::merge(s17) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 22,
+                opens: 1,
+                closes: 2,
+                saveState: 1,
+                restoreState: 1,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 22,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 1,
+                  restoreState: 1,
+                  isEOF: 1,
+                  projections: {
+                    '10': 'newObj("plan_id", s4, "content_type", s3, "profile_id", s5) ',
+                    '11': 'doubleDoubleSumFinalize(s9) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 22,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 1,
+                    restoreState: 1,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('4'),
+                      Long('3'),
+                      Long('5')
+                    ],
+                    expressions: {
+                      '9': 'aggDoubleDoubleSum(s6) ',
+                      initExprs: {
+                        '9': null,
+                        mergingExprs: {
+                          '8': 'aggMergeDoubleDoubleSums(s8) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'filter',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 22,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 1,
+                      restoreState: 1,
+                      isEOF: 1,
+                      numTested: 50002,
+                      filter: '(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false)) ',
+                      inputStage: {
+                        stage: 'scan',
+                        planNodeId: 1,
+                        nReturned: 50002,
+                        executionTimeMillisEstimate: 1,
+                        opens: 1,
+                        closes: 1,
+                        saveState: 1,
+                        restoreState: 1,
+                        isEOF: 1,
+                        numReads: 50002,
+                        recordSlot: 1,
+                        recordIdSlot: 2,
+                        scanFieldNames: [
+                          'content_type',
+                          'plan_id',
+                          'profile_id',
+                          'watched_sec',
+                          'started_at'
+                        ],
+                        scanFieldSlots: [
+                          Long('3'),
+                          Long('4'),
+                          Long('5'),
+                          Long('6'),
+                          Long('7')
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: {
+        '$natural': 1
+      },
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
+{
+  repetition: 2,
+  hint: 'sessions_consumption',
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 921,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'PROJECTION_COVERED',
+                planNodeId: 2,
+                transformBy: {
+                  content_type: true,
+                  plan_id: true,
+                  profile_id: true,
+                  watched_sec: true,
+                  _id: false
+                },
+                inputStage: {
+                  stage: 'IXSCAN',
+                  planNodeId: 1,
+                  nss: 'cineconecta_benchmark.playback_sessions',
+                  keyPattern: {
+                    started_at: 1,
+                    plan_id: 1,
+                    content_type: 1,
+                    profile_id: 1,
+                    watched_sec: 1
+                  },
+                  indexName: 'sessions_consumption',
+                  isMultiKey: false,
+                  multiKeyPaths: {
+                    started_at: [],
+                    plan_id: [],
+                    content_type: [],
+                    profile_id: [],
+                    watched_sec: []
+                  },
+                  isUnique: false,
+                  isSparse: false,
+                  isPartial: false,
+                  indexVersion: 2,
+                  direction: 'forward',
+                  indexBounds: {
+                    started_at: [
+                      '[new Date(1780272000000), new Date(1780876800000))'
+                    ],
+                    plan_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    content_type: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    profile_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    watched_sec: [
+                      '[MinKey, MaxKey]'
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s20 env: { s18 = {} (emptyObj) }',
+          stages: '[5] project [s20 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19)] \n' +
+            '[5] project [s19 = \n' +
+            '    if isNullish(s17) \n' +
+            '    then null \n' +
+            '    elif isNumber(s17) \n' +
+            '    then (s17 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s16 = newObj("plan_id", s11, "content_type", s10), s17 = doubleDoubleSumFinalize(s13)] \n' +
+            '[4] group [s11, s10] [s13 = aggDoubleDoubleSum(s9), s14 = _internalCount::accumulate(s14, 1)] spillSlots[s12, s15] mergingExprs[aggMergeDoubleDoubleSums(s12), _internalCount::merge(s15)] \n' +
+            '[4] extract_field_paths inputs[s8 = Get(_id)/Id, s9 = Get(seconds)/Id] outputs[s10 = Get(_id)/Traverse/Get(content_type)/Id, s11 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s8 = newObj("plan_id", s2, "content_type", s3, "profile_id", s4), s9 = doubleDoubleSumFinalize(s7)] \n' +
+            '[3] group [s2, s3, s4] [s7 = aggDoubleDoubleSum(s5)] spillSlots[s6] mergingExprs[aggMergeDoubleDoubleSums(s6)] \n' +
+            '[1] ixseek seekKeyLow = KS(788000019E807AEC000A0A0A0A01) seekKeyHigh = KS(788000019EA48770000A0A0A0A01) [s1 = recordId] [s2 = 1, s3 = 2, s4 = 3, s5 = 4] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" @"sessions_consumption" forward '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 2,
+      executionTimeMicros: 2058,
+      totalKeysExamined: 959,
+      totalDocsExamined: 0,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        opens: 1,
+        closes: 1,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        projections: {
+          '20': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          opens: 1,
+          closes: 1,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          projections: {
+            '19': '\n' +
+              '    if isNullish(s17) \n' +
+              '    then null \n' +
+              '    elif isNumber(s17) \n' +
+              '    then (s17 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 0,
+            opens: 1,
+            closes: 1,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 1,
+            projections: {
+              '16': 'newObj("plan_id", s11, "content_type", s10) ',
+              '17': 'doubleDoubleSumFinalize(s13) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 0,
+              opens: 1,
+              closes: 1,
+              saveState: 0,
+              restoreState: 0,
+              isEOF: 1,
+              groupBySlots: [
+                Long('11'),
+                Long('10')
+              ],
+              expressions: {
+                '13': 'aggDoubleDoubleSum(s9) ',
+                '14': '_internalCount::accumulate(s14, 1) ',
+                initExprs: {
+                  '13': null,
+                  '14': null,
+                  mergingExprs: {
+                    '12': 'aggMergeDoubleDoubleSums(s12) ',
+                    '15': '_internalCount::merge(s15) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 0,
+                opens: 1,
+                closes: 2,
+                saveState: 0,
+                restoreState: 0,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 0,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 0,
+                  restoreState: 0,
+                  isEOF: 1,
+                  projections: {
+                    '8': 'newObj("plan_id", s2, "content_type", s3, "profile_id", s4) ',
+                    '9': 'doubleDoubleSumFinalize(s7) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 0,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 0,
+                    restoreState: 0,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('2'),
+                      Long('3'),
+                      Long('4')
+                    ],
+                    expressions: {
+                      '7': 'aggDoubleDoubleSum(s5) ',
+                      initExprs: {
+                        '7': null,
+                        mergingExprs: {
+                          '6': 'aggMergeDoubleDoubleSums(s6) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'ixseek',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 0,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 0,
+                      restoreState: 0,
+                      isEOF: 1,
+                      indexName: 'sessions_consumption',
+                      keysExamined: 959,
+                      seeks: 1,
+                      numReads: 960,
+                      recordIdSlot: 1,
+                      outputSlots: [
+                        Long('2'),
+                        Long('3'),
+                        Long('4'),
+                        Long('5')
+                      ],
+                      indexKeysToInclude: '00000000000000000000000000011110',
+                      seekKeyLow: 'KS(788000019E807AEC000A0A0A0A01) ',
+                      seekKeyHigh: 'KS(788000019EA48770000A0A0A0A01) '
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: 'sessions_consumption',
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
+{
+  repetition: 3,
+  hint: {
+    '$natural': 1
+  },
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 749,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'COLLSCAN',
+                planNodeId: 1,
+                filter: {
+                  '$and': [
+                    {
+                      started_at: {
+                        '$lt': ISODate('2026-06-08T00:00:00.000Z')
+                      }
+                    },
+                    {
+                      started_at: {
+                        '$gte': ISODate('2026-06-01T00:00:00.000Z')
+                      }
+                    }
+                  ]
+                },
+                nss: 'cineconecta_benchmark.playback_sessions',
+                direction: 'forward'
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s22 env: { s20 = {} (emptyObj) }',
+          stages: '[5] project [s22 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21)] \n' +
+            '[5] project [s21 = \n' +
+            '    if isNullish(s19) \n' +
+            '    then null \n' +
+            '    elif isNumber(s19) \n' +
+            '    then (s19 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s18 = newObj("plan_id", s13, "content_type", s12), s19 = doubleDoubleSumFinalize(s15)] \n' +
+            '[4] group [s13, s12] [s15 = aggDoubleDoubleSum(s11), s16 = _internalCount::accumulate(s16, 1)] spillSlots[s14, s17] mergingExprs[aggMergeDoubleDoubleSums(s14), _internalCount::merge(s17)] \n' +
+            '[4] extract_field_paths inputs[s10 = Get(_id)/Id, s11 = Get(seconds)/Id] outputs[s12 = Get(_id)/Traverse/Get(content_type)/Id, s13 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s10 = newObj("plan_id", s4, "content_type", s3, "profile_id", s5), s11 = doubleDoubleSumFinalize(s9)] \n' +
+            '[3] group [s4, s3, s5] [s9 = aggDoubleDoubleSum(s6)] spillSlots[s8] mergingExprs[aggMergeDoubleDoubleSums(s8)] \n' +
+            '[1] filter {(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false))} \n' +
+            '[1] scan generic [s1 = record, s2 = recordId] [s3 = content_type, s4 = plan_id, s5 = profile_id, s6 = watched_sec, s7 = started_at] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 23,
+      executionTimeMicros: 23965,
+      totalKeysExamined: 0,
+      totalDocsExamined: 50002,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 20,
+        opens: 1,
+        closes: 1,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        projections: {
+          '22': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s20, s18, s16, s21) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 20,
+          opens: 1,
+          closes: 1,
+          saveState: 1,
+          restoreState: 1,
+          isEOF: 1,
+          projections: {
+            '21': '\n' +
+              '    if isNullish(s19) \n' +
+              '    then null \n' +
+              '    elif isNumber(s19) \n' +
+              '    then (s19 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 20,
+            opens: 1,
+            closes: 1,
+            saveState: 1,
+            restoreState: 1,
+            isEOF: 1,
+            projections: {
+              '18': 'newObj("plan_id", s13, "content_type", s12) ',
+              '19': 'doubleDoubleSumFinalize(s15) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 20,
+              opens: 1,
+              closes: 1,
+              saveState: 1,
+              restoreState: 1,
+              isEOF: 1,
+              groupBySlots: [
+                Long('13'),
+                Long('12')
+              ],
+              expressions: {
+                '15': 'aggDoubleDoubleSum(s11) ',
+                '16': '_internalCount::accumulate(s16, 1) ',
+                initExprs: {
+                  '15': null,
+                  '16': null,
+                  mergingExprs: {
+                    '14': 'aggMergeDoubleDoubleSums(s14) ',
+                    '17': '_internalCount::merge(s17) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 20,
+                opens: 1,
+                closes: 2,
+                saveState: 1,
+                restoreState: 1,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 20,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 1,
+                  restoreState: 1,
+                  isEOF: 1,
+                  projections: {
+                    '10': 'newObj("plan_id", s4, "content_type", s3, "profile_id", s5) ',
+                    '11': 'doubleDoubleSumFinalize(s9) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 20,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 1,
+                    restoreState: 1,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('4'),
+                      Long('3'),
+                      Long('5')
+                    ],
+                    expressions: {
+                      '9': 'aggDoubleDoubleSum(s6) ',
+                      initExprs: {
+                        '9': null,
+                        mergingExprs: {
+                          '8': 'aggMergeDoubleDoubleSums(s8) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'filter',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 20,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 1,
+                      restoreState: 1,
+                      isEOF: 1,
+                      numTested: 50002,
+                      filter: '(((s7 < Date(1780876800000)) ?: false) && ((s7 >= Date(1780272000000)) ?: false)) ',
+                      inputStage: {
+                        stage: 'scan',
+                        planNodeId: 1,
+                        nReturned: 50002,
+                        executionTimeMillisEstimate: 13,
+                        opens: 1,
+                        closes: 1,
+                        saveState: 1,
+                        restoreState: 1,
+                        isEOF: 1,
+                        numReads: 50002,
+                        recordSlot: 1,
+                        recordIdSlot: 2,
+                        scanFieldNames: [
+                          'content_type',
+                          'plan_id',
+                          'profile_id',
+                          'watched_sec',
+                          'started_at'
+                        ],
+                        scanFieldSlots: [
+                          Long('3'),
+                          Long('4'),
+                          Long('5'),
+                          Long('6'),
+                          Long('7')
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: {
+        '$natural': 1
+      },
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
+{
+  repetition: 3,
+  hint: 'sessions_consumption',
+  explain: {
+    explainVersion: '2',
+    queryPlanner: {
+      namespace: 'cineconecta_benchmark.playback_sessions',
+      parsedQuery: {
+        '$and': [
+          {
+            started_at: {
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          },
+          {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z')
+            }
+          }
+        ]
+      },
+      indexFilterSet: false,
+      queryHash: '7871A1DC',
+      planCacheShapeHash: '7871A1DC',
+      planCacheKey: '2F048ACF',
+      optimizationTimeMillis: 0,
+      optimizationTimeMicros: 859,
+      optimizedPipeline: true,
+      maxIndexedOrSolutionsReached: false,
+      maxIndexedAndSolutionsReached: false,
+      maxScansToExplodeReached: false,
+      prunedSimilarIndexes: false,
+      winningPlan: {
+        isCached: false,
+        queryPlan: {
+          stage: 'PROJECTION_DEFAULT',
+          planNodeId: 5,
+          transformBy: {
+            _id: true,
+            profiles: true,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                {
+                  '$const': 60
+                }
+              ]
+            }
+          },
+          inputStage: {
+            stage: 'GROUP',
+            planNodeId: 4,
+            inputStage: {
+              stage: 'GROUP',
+              planNodeId: 3,
+              inputStage: {
+                stage: 'PROJECTION_COVERED',
+                planNodeId: 2,
+                transformBy: {
+                  content_type: true,
+                  plan_id: true,
+                  profile_id: true,
+                  watched_sec: true,
+                  _id: false
+                },
+                inputStage: {
+                  stage: 'IXSCAN',
+                  planNodeId: 1,
+                  nss: 'cineconecta_benchmark.playback_sessions',
+                  keyPattern: {
+                    started_at: 1,
+                    plan_id: 1,
+                    content_type: 1,
+                    profile_id: 1,
+                    watched_sec: 1
+                  },
+                  indexName: 'sessions_consumption',
+                  isMultiKey: false,
+                  multiKeyPaths: {
+                    started_at: [],
+                    plan_id: [],
+                    content_type: [],
+                    profile_id: [],
+                    watched_sec: []
+                  },
+                  isUnique: false,
+                  isSparse: false,
+                  isPartial: false,
+                  indexVersion: 2,
+                  direction: 'forward',
+                  indexBounds: {
+                    started_at: [
+                      '[new Date(1780272000000), new Date(1780876800000))'
+                    ],
+                    plan_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    content_type: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    profile_id: [
+                      '[MinKey, MaxKey]'
+                    ],
+                    watched_sec: [
+                      '[MinKey, MaxKey]'
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        slotBasedPlan: {
+          slots: '$$RESULT=s20 env: { s18 = {} (emptyObj) }',
+          stages: '[5] project [s20 = makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19)] \n' +
+            '[5] project [s19 = \n' +
+            '    if isNullish(s17) \n' +
+            '    then null \n' +
+            '    elif isNumber(s17) \n' +
+            '    then (s17 / 60) \n' +
+            '    else fail(7157719, "$divide only supports numeric types") \n' +
+            '] \n' +
+            '[4] project [s16 = newObj("plan_id", s11, "content_type", s10), s17 = doubleDoubleSumFinalize(s13)] \n' +
+            '[4] group [s11, s10] [s13 = aggDoubleDoubleSum(s9), s14 = _internalCount::accumulate(s14, 1)] spillSlots[s12, s15] mergingExprs[aggMergeDoubleDoubleSums(s12), _internalCount::merge(s15)] \n' +
+            '[4] extract_field_paths inputs[s8 = Get(_id)/Id, s9 = Get(seconds)/Id] outputs[s10 = Get(_id)/Traverse/Get(content_type)/Id, s11 = Get(_id)/Traverse/Get(plan_id)/Id] \n' +
+            '[3] project [s8 = newObj("plan_id", s2, "content_type", s3, "profile_id", s4), s9 = doubleDoubleSumFinalize(s7)] \n' +
+            '[3] group [s2, s3, s4] [s7 = aggDoubleDoubleSum(s5)] spillSlots[s6] mergingExprs[aggMergeDoubleDoubleSums(s6)] \n' +
+            '[1] ixseek seekKeyLow = KS(788000019E807AEC000A0A0A0A01) seekKeyHigh = KS(788000019EA48770000A0A0A0A01) [s1 = recordId] [s2 = 1, s3 = 2, s4 = 3, s5 = 4] @"37c08d9e-d34e-421d-9c98-fd231288f2f8" @"sessions_consumption" forward '
+        }
+      },
+      rejectedPlans: []
+    },
+    executionStats: {
+      executionSuccess: true,
+      nReturned: 1,
+      executionTimeMillis: 1,
+      executionTimeMicros: 1904,
+      totalKeysExamined: 959,
+      totalDocsExamined: 0,
+      executionStages: {
+        stage: 'project',
+        planNodeId: 5,
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        opens: 1,
+        closes: 1,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        projections: {
+          '20': 'makeBsonObj(MakeObjSpec([_id = Add(0), profiles = Add(1), minutes = Add(2)], Closed, NewObj, 0), s18, s16, s14, s19) '
+        },
+        inputStage: {
+          stage: 'project',
+          planNodeId: 5,
+          nReturned: 1,
+          executionTimeMillisEstimate: 0,
+          opens: 1,
+          closes: 1,
+          saveState: 0,
+          restoreState: 0,
+          isEOF: 1,
+          projections: {
+            '19': '\n' +
+              '    if isNullish(s17) \n' +
+              '    then null \n' +
+              '    elif isNumber(s17) \n' +
+              '    then (s17 / 60) \n' +
+              '    else fail(7157719, "$divide only supports numeric types") \n'
+          },
+          inputStage: {
+            stage: 'project',
+            planNodeId: 4,
+            nReturned: 1,
+            executionTimeMillisEstimate: 0,
+            opens: 1,
+            closes: 1,
+            saveState: 0,
+            restoreState: 0,
+            isEOF: 1,
+            projections: {
+              '16': 'newObj("plan_id", s11, "content_type", s10) ',
+              '17': 'doubleDoubleSumFinalize(s13) '
+            },
+            inputStage: {
+              stage: 'group',
+              planNodeId: 4,
+              nReturned: 1,
+              executionTimeMillisEstimate: 0,
+              opens: 1,
+              closes: 1,
+              saveState: 0,
+              restoreState: 0,
+              isEOF: 1,
+              groupBySlots: [
+                Long('11'),
+                Long('10')
+              ],
+              expressions: {
+                '13': 'aggDoubleDoubleSum(s9) ',
+                '14': '_internalCount::accumulate(s14, 1) ',
+                initExprs: {
+                  '13': null,
+                  '14': null,
+                  mergingExprs: {
+                    '12': 'aggMergeDoubleDoubleSums(s12) ',
+                    '15': '_internalCount::merge(s15) '
+                  }
+                }
+              },
+              usedDisk: false,
+              spills: 0,
+              spilledBytes: 0,
+              spilledRecords: 0,
+              spilledDataStorageSize: 0,
+              peakTrackedMemBytes: 119,
+              inputStage: {
+                stage: 'extract_field_paths',
+                planNodeId: 4,
+                nReturned: 1,
+                executionTimeMillisEstimate: 0,
+                opens: 1,
+                closes: 2,
+                saveState: 0,
+                restoreState: 0,
+                isEOF: 1,
+                inputStage: {
+                  stage: 'project',
+                  planNodeId: 3,
+                  nReturned: 1,
+                  executionTimeMillisEstimate: 0,
+                  opens: 1,
+                  closes: 2,
+                  saveState: 0,
+                  restoreState: 0,
+                  isEOF: 1,
+                  projections: {
+                    '8': 'newObj("plan_id", s2, "content_type", s3, "profile_id", s4) ',
+                    '9': 'doubleDoubleSumFinalize(s7) '
+                  },
+                  inputStage: {
+                    stage: 'group',
+                    planNodeId: 3,
+                    nReturned: 1,
+                    executionTimeMillisEstimate: 0,
+                    opens: 1,
+                    closes: 2,
+                    saveState: 0,
+                    restoreState: 0,
+                    isEOF: 1,
+                    groupBySlots: [
+                      Long('2'),
+                      Long('3'),
+                      Long('4')
+                    ],
+                    expressions: {
+                      '7': 'aggDoubleDoubleSum(s5) ',
+                      initExprs: {
+                        '7': null,
+                        mergingExprs: {
+                          '6': 'aggMergeDoubleDoubleSums(s6) '
+                        }
+                      }
+                    },
+                    usedDisk: false,
+                    spills: 0,
+                    spilledBytes: 0,
+                    spilledRecords: 0,
+                    spilledDataStorageSize: 0,
+                    peakTrackedMemBytes: 119,
+                    inputStage: {
+                      stage: 'ixseek',
+                      planNodeId: 1,
+                      nReturned: 959,
+                      executionTimeMillisEstimate: 0,
+                      opens: 1,
+                      closes: 3,
+                      saveState: 0,
+                      restoreState: 0,
+                      isEOF: 1,
+                      indexName: 'sessions_consumption',
+                      keysExamined: 959,
+                      seeks: 1,
+                      numReads: 960,
+                      recordIdSlot: 1,
+                      outputSlots: [
+                        Long('2'),
+                        Long('3'),
+                        Long('4'),
+                        Long('5')
+                      ],
+                      indexKeysToInclude: '00000000000000000000000000011110',
+                      seekKeyLow: 'KS(788000019E807AEC000A0A0A0A01) ',
+                      seekKeyHigh: 'KS(788000019EA48770000A0A0A0A01) '
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    queryShapeHash: 'DE9E700D13CE1F9BD1CC8873FDBD82408441B00B926AADF4DF33BAE623C8830A',
+    peakTrackedMemBytes: Long('238'),
+    command: {
+      aggregate: 'playback_sessions',
+      pipeline: [
+        {
+          '$match': {
+            started_at: {
+              '$gte': ISODate('2026-06-01T00:00:00.000Z'),
+              '$lt': ISODate('2026-06-08T00:00:00.000Z')
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$plan_id',
+              content_type: '$content_type',
+              profile_id: '$profile_id'
+            },
+            seconds: {
+              '$sum': '$watched_sec'
+            }
+          }
+        },
+        {
+          '$group': {
+            _id: {
+              plan_id: '$_id.plan_id',
+              content_type: '$_id.content_type'
+            },
+            seconds: {
+              '$sum': '$seconds'
+            },
+            profiles: {
+              '$sum': 1
+            }
+          }
+        },
+        {
+          '$project': {
+            profiles: 1,
+            minutes: {
+              '$divide': [
+                '$seconds',
+                60
+              ]
+            }
+          }
+        }
+      ],
+      hint: 'sessions_consumption',
+      cursor: {},
+      '$db': 'cineconecta_benchmark'
+    },
+    serverInfo: {
+      host: 'JhonPepe',
+      port: 27028,
+      version: '9.0.8',
+      gitVersion: '115a0fe2dcd8edd5bacd4557bd2e741a8e080665'
+    },
+    serverParameters: {
+      internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+      internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+      internalQueryProhibitBlockingMergeOnMongoS: 0,
+      internalQueryFrameworkControl: 'trySbeRestricted',
+      internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+    },
+    ok: 1
+  }
+}
